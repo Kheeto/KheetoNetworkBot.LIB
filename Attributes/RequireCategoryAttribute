@@ -1,0 +1,39 @@
+using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
+using KheetoNetworkBot.LIB.Enums;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KheetoNetworkBot.LIB.Attributes
+{
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
+    public class RequireCategoryAttribute : CheckBaseAttribute
+    {
+        public IReadOnlyList<string> categoryNames { get; set; }
+        public ChannelCheckMode checkMode { get; }
+
+        public RequireCategoryAttribute(ChannelCheckMode checkMode, params string[] categoryNames)
+        {
+            this.categoryNames = new ReadOnlyCollection<string>(categoryNames);
+            this.checkMode = checkMode;
+        }
+
+        public override Task<bool> ExecuteCheckAsync(CommandContext command, bool help)
+        {
+            if(command.Guild == null || command.Member == null) return Task.FromResult(false);
+            bool isInCategory = categoryNames.Contains(command.Channel.Parent.Name, StringComparer.OrdinalIgnoreCase);
+
+            return checkMode switch
+            {
+                ChannelCheckMode.Any => Task.FromResult(isInCategory),
+                ChannelCheckMode.None => Task.FromResult(!isInCategory),
+                _ => Task.FromResult(false),
+            };
+        }
+    }
+}
