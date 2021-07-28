@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KheetoNetworkBot.Handler.Steps
+namespace KheetoNetworkBot.LIB.Handler.Steps
 {
     public class TextStep : DialogueStepBase
     {
