@@ -16,18 +16,21 @@ namespace KheetoNetworkBot.LIB
         string description;
         string color;
         DiscordEmoji emoji;
+        DiscordRole role;
 
-        public SingleReactionRole(CommandContext command, string title, string description, string color, DiscordEmoji emoji)
+        public SingleReactionRole(CommandContext command, string title, string description, string color, DiscordEmoji emoji, DiscordRole role)
         {
             this.command = command;
             this.title = title;
             this.description = description;
             this.color = color;
             this.emoji = emoji;
+            this.role = role;
         }
 
         public async Task RunAsync()
         {
+            await command.Message.DeleteAsync();
 
             DiscordEmbedBuilder embed = new DiscordEmbedBuilder
             {
@@ -37,13 +40,17 @@ namespace KheetoNetworkBot.LIB
             };
 
             DiscordMessage sentEmbed = await command.Channel.SendMessageAsync(embed);
-            await command.Message.DeleteAsync();
 
             InteractivityExtension interactivity = command.Client.GetInteractivity();
 
             await sentEmbed.CreateReactionAsync(emoji);
 
-            await interactivity.WaitForReactionAsync(x => x.Message == sentEmbed && x.Emoji == emoji);
+            var reaction = await interactivity.WaitForReactionAsync(x => x.Message == sentEmbed && x.Emoji == emoji);
+
+            if(reaction.Result.Emoji == emoji)
+            {
+                await (reaction.Result.User as DiscordMember).GrantRoleAsync(role);
+            }
         }
     }
 }
