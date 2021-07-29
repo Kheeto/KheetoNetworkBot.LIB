@@ -1,4 +1,5 @@
 # KheetoNetwork-Bot.LIB
+Under MIT License
 
-Library for KheetoNetwork-Bot
-Made by Kheeto
+### This is a Library for KheetoNetwork-Bot
+### Made by Kheeto
