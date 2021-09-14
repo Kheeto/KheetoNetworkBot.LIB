@@ -9,26 +9,8 @@ namespace KheetoNetworkBot.LIB
 {
     public class MemeMaker
     {
-        public string embedTitle;
-        public string memeURL;
-        public bool useImage;
-        public bool anotherURLForImage;
-        public string anotherImageURL;
-        CommandContext command;
 
-        public MemeMaker(string embedTitle, string memeURL, CommandContext command, bool? useImage = null, bool?anotherURLForImage = null, string? anotherImageURL = null)
-        {
-            if (useImage == null) useImage = true;
-            if (anotherURLForImage == null) anotherURLForImage = false;
-            if (anotherURLForImage == true) this.anotherImageURL = anotherImageURL;
-            this.embedTitle = embedTitle;
-            this.memeURL = memeURL;
-            this.command = command;
-            this.useImage = (bool)useImage;
-            this.anotherURLForImage = (bool)anotherURLForImage;
-        }
-
-        public async Task RunAsync()
+        public static async Task CreateMeme(string embedTitle, string memeURL, CommandContext command, bool? useImage = null, bool? anotherURLForImage = null, string? anotherImageURL = null)
         {
             DiscordEmbedBuilder.EmbedFooter footer = new DiscordEmbedBuilder.EmbedFooter
             {
@@ -43,10 +25,10 @@ namespace KheetoNetworkBot.LIB
                 Footer = footer,
             };
 
-            if (useImage) embed.ImageUrl = memeURL;
+            if ((bool)useImage) embed.ImageUrl = memeURL;
             else { 
                 embed.Url = memeURL; 
-                if(anotherURLForImage)
+                if((bool)anotherURLForImage)
                 {
                     embed.ImageUrl = anotherImageURL;
                 }
