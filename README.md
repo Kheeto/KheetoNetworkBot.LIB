@@ -1,5 +1,3 @@
 # KheetoNetwork-Bot.LIB
-Under MIT License
 
-### This is a Library for KheetoNetwork-Bot
-### Made by Kheeto
+This is a Library i use for my C# discord bots
